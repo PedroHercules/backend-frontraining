@@ -1,0 +1,36 @@
+import { Sequelize, Op, Model } from 'sequelize';
+import { User  } from '../models/User';
+
+interface UserInterface {
+  username: string,
+  email: string,
+  password?: string
+}
+
+export class UserRepository {
+
+  async createUser({ username, email, password }: UserInterface) {
+    const user: UserInterface = await User.create({ 
+        username,
+        email,
+        password
+      }
+    );
+
+    user.password = undefined;
+    return user;
+  }
+
+  async findUser(username: string, email: string) {
+    const user = await User.findOne({
+      raw: true,
+      where: {
+        [Op.or]: [
+          {username: username},
+          {email: email}
+        ]
+      }
+    });
+    return user;
+  }
+}
