@@ -1,4 +1,4 @@
-import { UserRepository } from '../repositories/userRepository';
+import { UserRepository, UserInterface } from '../repositories/userRepository';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 
@@ -39,6 +39,35 @@ export class UserController {
       return res.status(500).json({
         message: error
       });
+    }
+  }
+
+  async auth (req: Request, res: Response) {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios" });
+      }
+
+      const user = await userRepository.findUserByEmail(email) as UserInterface;
+
+      if (!user) {
+        return res.status(404).json({ message: "Este usuário não é cadastrado" });
+      }
+      
+      const checkPassword = await bcrypt.compare(password, user.password!);
+
+      if (!checkPassword){
+        return res.status(400).json({ message: "Senha incorreta" });
+      }
+
+      user.password = undefined;
+      
+      return res.status(200).json({ user });
+    } catch (error: any) {
+      console.log(error)
+      res.status(500).json({ message: error.message })
     }
   }
 }
