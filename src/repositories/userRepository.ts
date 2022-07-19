@@ -1,7 +1,7 @@
 import { Sequelize, Op, Model } from 'sequelize';
 import { User  } from '../models/User';
 
-interface UserInterface {
+export interface UserInterface {
   username: string,
   email: string,
   password?: string
@@ -31,6 +31,17 @@ export class UserRepository {
         ]
       }
     });
+    return user;
+  }
+
+  async findUserByEmail (email: string) {
+    const user = await User.findOne({
+      raw: true,
+      where: {
+        email: email
+      }
+    });
+
     return user;
   }
 }

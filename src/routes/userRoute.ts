@@ -7,3 +7,4 @@ export const routesUser = express.Router();
 const userController = new UserController();
 
 routesUser.post('/', userController.registerUser);
+routesUser.post('/auth', userController.auth);
