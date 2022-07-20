@@ -1,6 +1,4 @@
-import { Table, Column, Model, DataType, AutoIncrement, AllowNull, PrimaryKey, DefaultScope, Default } from 'sequelize-typescript';
-import { connectionDB } from '../database/database';
-
+import { Table, Column, Model, DataType, AutoIncrement, AllowNull, PrimaryKey, Default } from 'sequelize-typescript';
 
 interface UserModelInterface {
   id: number
