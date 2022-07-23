@@ -4,6 +4,7 @@ import cors from 'cors';
 import { connectionDB } from './database/database';
 
 import { routesUser } from './routes/userRoute';
+import { routesChallenge } from './routes/challengeRoute';
 
 dotenv.config();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false}))
 
 app.use('/user', routesUser);
+app.use('/challenge', routesChallenge);
 
 
 
