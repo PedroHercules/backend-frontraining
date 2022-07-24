@@ -1,4 +1,11 @@
-import { Table, Column, Model, DataType, AutoIncrement, AllowNull, PrimaryKey, Default } from 'sequelize-typescript';
+import { 
+  Table, 
+  Column, 
+  Model, 
+  DataType, 
+  AutoIncrement, 
+  AllowNull, PrimaryKey, Default, HasMany } from 'sequelize-typescript';
+import { Challenge } from './Challenge';
 
 interface UserModelInterface {
   id: number
@@ -36,4 +43,6 @@ export class User extends Model implements UserModelInterface{
   @Column(DataType.INTEGER)
   score: number
 
+  @HasMany(() => Challenge)
+  challenges: Challenge[]
 }

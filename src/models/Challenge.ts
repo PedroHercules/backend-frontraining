@@ -1,7 +1,16 @@
-import { Table, Column, Model, DataType, AutoIncrement, AllowNull, PrimaryKey, Default } from 'sequelize-typescript';
+import { 
+  Table, 
+  Column, 
+  Model, 
+  DataType, 
+  AutoIncrement, 
+  AllowNull, PrimaryKey, BelongsTo, ForeignKey} from 'sequelize-typescript';
+
+import { User } from './User';
 
 interface ChallengeModelInterface {
   id_challenge: number
+  userId: number
   title: string
   description: string
   level: string
@@ -10,6 +19,7 @@ interface ChallengeModelInterface {
   assets: string
   colors: string
   fonts: string
+  user: object
 }
 @Table({
   tableName: 'challenges',
@@ -53,4 +63,11 @@ export class Challenge extends Model implements ChallengeModelInterface {
   @AllowNull(false)
   @Column(DataType.STRING)
   fonts: string;
+
+  @ForeignKey(() => User)
+  @Column
+  userId: number
+
+  @BelongsTo(() => User)
+  user: User
 }

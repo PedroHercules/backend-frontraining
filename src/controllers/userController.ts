@@ -1,6 +1,7 @@
 import { UserRepository, UserInterface } from '../repositories/userRepository';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
+import { generateToken } from '../middleware/authMiddleware';
 
 const userRepository = new UserRepository();
 export class UserController {
@@ -63,8 +64,12 @@ export class UserController {
       }
 
       user.password = undefined;
+
+      const token = await generateToken({
+        id: user.id
+      });
       
-      return res.status(200).json({ user });
+      return res.status(200).json({ token, user });
     } catch (error: any) {
       console.log(error)
       res.status(500).json({ message: error.message })
