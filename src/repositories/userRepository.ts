@@ -2,6 +2,7 @@ import { Sequelize, Op, Model } from 'sequelize';
 import { User  } from '../models/User';
 
 export interface UserInterface {
+  id?: number
   username: string,
   email: string,
   password?: string
