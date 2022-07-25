@@ -1,5 +1,6 @@
 import { Challenge } from '../models/Challenge';
 import { User } from '../models/User';
+import { Op } from 'sequelize';
 
 export interface ChallengeInterface {
   title: string
@@ -32,6 +33,19 @@ export class ChallengeRepository {
 
   async all() {
     const challenges = await Challenge.findAll({
+      include: [{
+        model: User,
+        attributes: ["username", "email", "score"]
+      }]
+    });
+    return challenges;
+  }
+
+  async filterByLevel(filter: string) {
+    const challenges = await Challenge.findAll({
+      where: {
+        level: filter
+      },
       include: [{
         model: User,
         attributes: ["username", "email", "score"]

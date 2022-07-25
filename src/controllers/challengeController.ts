@@ -54,8 +54,15 @@ export class ChallengeController {
 
   async index(req: Request, res: Response) {
     try {
-      const challenges = await challengeRepository.all();
-      if (!challenges){
+      const filter = req.query.level;
+      let challenges: object[];
+      if (filter) {
+        challenges = await challengeRepository.filterByLevel(filter.toString());
+      } else {
+        challenges = await challengeRepository.all();
+      }
+      
+      if (challenges.length === 0){
         return res.status(404).json({ message: "Não há desafios cadastrados" });
       }
 
