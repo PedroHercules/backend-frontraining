@@ -54,12 +54,13 @@ export class ChallengeController {
 
   async index(req: Request, res: Response) {
     try {
-      const filter = req.query.level;
+      const level = req.query.level;
+      const order = req.query.order || 'DESC';
       let challenges: object[];
-      if (filter) {
-        challenges = await challengeRepository.filterByLevel(filter.toString());
+      if (level) {
+        challenges = await challengeRepository.filterByLevel(level.toString(), order?.toString());
       } else {
-        challenges = await challengeRepository.all();
+        challenges = await challengeRepository.all(order?.toString());
       }
       
       if (challenges.length === 0){

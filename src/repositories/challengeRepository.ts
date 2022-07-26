@@ -31,25 +31,31 @@ export class ChallengeRepository {
     return challenge;
   } 
 
-  async all() {
+  async all(order: string) {
     const challenges = await Challenge.findAll({
       include: [{
         model: User,
         attributes: ["username", "email", "score"]
-      }]
+      }],
+      order: [
+        ['createdAt', order]
+      ]
     });
     return challenges;
   }
 
-  async filterByLevel(filter: string) {
+  async filterByLevel(level: string, order: string) {
     const challenges = await Challenge.findAll({
       where: {
-        level: filter
+        level: level
       },
       include: [{
         model: User,
         attributes: ["username", "email", "score"]
-      }]
+      }],
+      order: [
+        ['createdAt', order]
+      ]
     });
     return challenges;
   }
