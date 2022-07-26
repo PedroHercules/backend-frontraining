@@ -16,6 +16,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false}))
 
+
+app.get('/', async (req, res) => {
+  res.status(200).json({ message: "Hello World" })
+});
 app.use('/user', routesUser);
 app.use('/challenge', routesChallenge);
 
