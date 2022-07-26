@@ -5,7 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "build": "npx tsc",
-    "start": "node src/server.ts",
+    "start": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts",
     "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts"
   },
   "keywords": [],
