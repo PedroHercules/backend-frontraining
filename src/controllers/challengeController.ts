@@ -6,19 +6,20 @@ const challengeRepository = new ChallengeRepository();
 export class ChallengeController {
   async create (req: Request, res: Response) {
     try {
-      const { 
+      const {
         title, 
         description, 
         level, 
-        image, 
         assets, 
         colors, 
         fonts, 
         tools,
         userId 
-      }: ChallengeInterface = req.body;
+      } = req.body;
 
-      if ( !userId || !title || !description || !level || !image || !assets || !colors || !fonts || !colors || !tools ) {
+      const image = req.file;
+
+      if ( !userId || !title || !description || !level || !assets || !colors || !fonts || !colors || !tools ) {
         return res.status(400).json({
           message: "Todos os valores são obrigatórios"
         })
@@ -30,11 +31,13 @@ export class ChallengeController {
         return res.status(400).json({ message: "Este desafio já existe" });
       }
 
+      const imagePath = 'uploads/' + title + "_" + image?.originalname;
+
       const challenge = await challengeRepository.register({
         title,
         description,
         level,
-        image,
+        image: imagePath,
         assets,
         colors,
         fonts,
