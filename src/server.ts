@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import path from 'path';
 import { connectionDB } from './database/database';
 
 import { routesUser } from './routes/userRoute';
@@ -23,6 +24,7 @@ app.get('/', async (req: Request, res: Response) => {
 
 app.use('/user', routesUser);
 app.use('/challenge', routesChallenge);
+app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 
 
 

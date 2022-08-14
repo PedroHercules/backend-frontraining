@@ -20,7 +20,7 @@ const securityKey= process.env.SECURITY_KEY as string;
 const userRepository = new UserRepository();
 
 export async function generateToken(data: object) {
-  return jwt.sign(data, securityKey, { expiresIn: '1d' })
+  return jwt.sign(data, securityKey, { expiresIn: '364d' })
 }
 
 export async function authorize(req: Request, res: Response, next: NextFunction) {
