@@ -33,8 +33,12 @@ export class UserController {
         email,
         password: hashPassword
       });
+
+      const token = await generateToken({
+        id: user.id
+      });
       
-      return res.status(201).json({ user });
+      return res.status(201).json({ token, user });
     } catch (error) {
       console.log(error)
       return res.status(500).json({
