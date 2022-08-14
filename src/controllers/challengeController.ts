@@ -25,7 +25,7 @@ export class ChallengeController {
         })
       }
 
-      const checkChallengeExists = await challengeRepository.find(title);
+      const checkChallengeExists = await challengeRepository.findByTitle(title);
 
       if (checkChallengeExists){
         return res.status(400).json({ message: "Este desafio já existe" });
@@ -76,6 +76,24 @@ export class ChallengeController {
       return res.status(500).json({
         message: error.message
       })
+    }
+  }
+
+  async get(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json( {message: "Param ID must be a number"} );
+      }
+      const challenge = await challengeRepository.findById(id);
+
+      if (!challenge) {
+        return res.status(404).json({ message: "Challenge not found" });
+      }
+
+      return res.status(200).json({ challenge });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message })
     }
   }
 }

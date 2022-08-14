@@ -60,11 +60,28 @@ export class ChallengeRepository {
     return challenges;
   }
 
-  async find(title: string) {
+  async findByTitle(title: string) {
     const challenge = await Challenge.findOne(
       { 
         where: {
           title: title
+        },
+
+        include: [{
+          model: User,
+          attributes: ["username", "email", "score"]
+        }]
+      }
+    );
+
+    return challenge;
+  }
+
+  async findById(id: number) {
+    const challenge = await Challenge.findOne(
+      { 
+        where: {
+          id_challenge: id
         },
 
         include: [{

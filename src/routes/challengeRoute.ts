@@ -10,4 +10,5 @@ export const routesChallenge = express.Router()
 const challengeController = new ChallengeController();
 
 routesChallenge.post('/', authorize, uploads.single('image'), challengeController.create);
-routesChallenge.get('/', challengeController.index)
+routesChallenge.get('/', challengeController.index);
+routesChallenge.get('/:id', challengeController.get);
