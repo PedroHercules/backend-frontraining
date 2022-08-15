@@ -1,9 +1,8 @@
-import { ChallengeRepository,ChallengeInterface } from '../repositories/challengeRepository';
+import { challengeRepository } from '../repositories/challengeRepository';
 import { Request, Response } from 'express';
 
-const challengeRepository = new ChallengeRepository();
 
-export class ChallengeController {
+class ChallengeController {
   async create (req: Request, res: Response) {
     try {
       const {
@@ -97,3 +96,5 @@ export class ChallengeController {
     }
   }
 }
+
+export const challengeController = new ChallengeController();

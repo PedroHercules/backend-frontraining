@@ -8,7 +8,7 @@ export interface UserInterface {
   password?: string
 }
 
-export class UserRepository {
+class UserRepository {
 
   async createUser({ username, email, password }: UserInterface) {
     const user: UserInterface = await User.create({ 
@@ -46,3 +46,5 @@ export class UserRepository {
     return user;
   }
 }
+
+export const userRepository = new UserRepository();

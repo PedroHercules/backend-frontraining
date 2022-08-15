@@ -1,8 +1,6 @@
 import jwt, { VerifyOptions } from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-import { UserRepository } from '../repositories/userRepository';
-
 import { NextFunction, Request, Response } from 'express';
 
 dotenv.config()
@@ -16,8 +14,6 @@ export interface getUserAuthInterface extends Request {
 }
 
 const securityKey= process.env.SECURITY_KEY as string;
-
-const userRepository = new UserRepository();
 
 export async function generateToken(data: object) {
   return jwt.sign(data, securityKey, { expiresIn: '364d' })

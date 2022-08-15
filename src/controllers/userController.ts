@@ -1,10 +1,9 @@
-import { UserRepository, UserInterface } from '../repositories/userRepository';
+import { userRepository, UserInterface } from '../repositories/userRepository';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { generateToken } from '../middleware/authMiddleware';
 
-const userRepository = new UserRepository();
-export class UserController {
+class UserController {
 
   async registerUser (req: Request, res: Response) {
     try {
@@ -80,3 +79,5 @@ export class UserController {
     }
   }
 }
+
+export const userController = new UserController();

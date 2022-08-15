@@ -14,7 +14,7 @@ export interface ChallengeInterface {
   userId: number
 }
 
-export class ChallengeRepository {
+class ChallengeRepository {
   async register( { title, description, level, image, tools, assets, colors, fonts, userId }: ChallengeInterface ) {
     const challenge = await Challenge.create({
       title,
@@ -94,3 +94,5 @@ export class ChallengeRepository {
     return challenge;
   }
 }
+
+export const challengeRepository = new ChallengeRepository();
