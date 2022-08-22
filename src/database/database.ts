@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 
 import { User } from '../models/User';
 import { Challenge } from '../models/Challenge';
+import { Solution } from '../models/Solution';
 
 dotenv.config();
 
@@ -18,5 +19,5 @@ export const connectionDB = new Sequelize(db_name, db_user, db_pass, {
   dialect: db_dialect
 });
 
-connectionDB.addModels([User, Challenge]);
+connectionDB.addModels([User, Challenge, Solution]);
 

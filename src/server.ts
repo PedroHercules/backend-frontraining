@@ -6,6 +6,7 @@ import { connectionDB } from './database/database';
 
 import { routesUser } from './routes/userRoute';
 import { routesChallenge } from './routes/challengeRoute';
+import { routesSolution } from './routes/solutionRoute';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get('/', async (req: Request, res: Response) => {
 
 app.use('/user', routesUser);
 app.use('/challenge', routesChallenge);
+app.use('/solution', routesSolution);
 app.use('/uploads', express.static(path.resolve(__dirname, 'uploads')));
 
 
