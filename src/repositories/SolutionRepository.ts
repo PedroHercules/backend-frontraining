@@ -3,7 +3,7 @@ import { Challenge } from "../models/Challenge";
 import { User } from "../models/User";
 
 interface SolutionRepositoryIF {
-  challengeId: number
+  challengeId?: number
   userId: number
   title: string
   repository: string
@@ -69,6 +69,25 @@ class SolutionRepository {
           model: User,
           attributes: ["username", "email", "score"]
         }]
+      }
+    );
+
+    return solution;
+  }
+
+  async update(id: number, 
+    { title, repository, site, image }: SolutionRepositoryIF) {
+    const solution = await Solution.update(
+      {
+        title,
+        repository,
+        site,
+        image
+      },
+      {
+        where: {
+          id_solution: id
+        }
       }
     );
 

@@ -11,3 +11,4 @@ routesSolution.post('/', authorize, uploadsSolution.single('image'), solutionCon
 routesSolution.get('/', solutionController.index);
 routesSolution.get('/user/:userId', solutionController.findByUser);
 routesSolution.delete('/:id', authorize, solutionController.destroy);
+routesSolution.put('/:id', authorize, uploadsSolution.single('image'), solutionController.update);

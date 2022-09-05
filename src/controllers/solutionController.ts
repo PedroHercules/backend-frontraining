@@ -66,6 +66,46 @@ class SolutionController {
     }
   }
 
+  async update(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Param ID must be a number" });
+      }
+
+      const {
+        title,
+        repository,
+        site,
+        userId,
+        challengeId
+      } = req.body;
+
+      const image = req.file;
+
+      const solution = await solutionRepository.findById(id);
+
+      if (!solution) {
+        return res.status(404).json({ message: "Solution not found" });
+      }
+
+      const imagePath = 'uploads/solutions/' + userId + "_" + challengeId + "_" + image?.originalname;
+
+      const updatedSolution = await solutionRepository.update(id, {
+        title,
+        repository,
+        site,
+        image: imagePath,
+        userId,
+        challengeId
+      });
+
+      return res.status(200).json({ solution: updatedSolution });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
   async destroy(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);

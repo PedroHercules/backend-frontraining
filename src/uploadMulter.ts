@@ -14,7 +14,8 @@ const storageSolution = multer.diskStorage({
     callback(null, "src/uploads/solutions/")
   },
   filename: function (req, file, callback) {
-    callback(null, req.body.userId + "_" + req.body.challengeId + "_" + file.originalname)
+    const challengeId = req.body.challengeId;
+    callback(null, req.body.userId + "_" + challengeId + "_" + file.originalname)
   }
 });
 
