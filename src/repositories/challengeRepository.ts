@@ -1,6 +1,7 @@
 import { Challenge } from '../models/Challenge';
 import { User } from '../models/User';
 import { Op } from 'sequelize';
+import { Solution } from '../models/Solution';
 
 export interface ChallengeInterface {
   title: string
@@ -33,10 +34,15 @@ class ChallengeRepository {
 
   async all(order: string) {
     const challenges = await Challenge.findAll({
-      include: [{
-        model: User,
-        attributes: ["username", "email", "score"]
-      }],
+      include: [
+        {
+          model: User,
+          attributes: ["username", "email", "score"]
+        },
+        {
+          model: Solution
+        }
+      ],
       order: [
         ['createdAt', order]
       ]
@@ -58,6 +64,16 @@ class ChallengeRepository {
       ]
     });
     return challenges;
+  }
+
+  async checkExists(title: string) {
+    const challenge = await Challenge.findOne({
+      where: {
+        title: title
+      }
+    });
+
+    return challenge;
   }
 
   async findByTitle(title: string) {
@@ -86,10 +102,15 @@ class ChallengeRepository {
           id_challenge: id
         },
 
-        include: [{
-          model: User,
-          attributes: ["username", "email", "score"]
-        }]
+        include: [
+          {
+            model: User,
+            attributes: ["username", "email", "score"]
+          },
+          {
+            model: Solution
+          }
+        ]
       }
     );
 
@@ -109,6 +130,16 @@ class ChallengeRepository {
         }]
       }
     );
+
+    return challenge;
+  }
+
+  async delete(id: number) {
+    const challenge = await Challenge.destroy({
+      where: {
+        id_challenge: id
+      }
+    });
 
     return challenge;
   }

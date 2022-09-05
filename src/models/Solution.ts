@@ -35,7 +35,11 @@ export class Solution extends Model implements SolutionInterface {
   @Column(DataType.INTEGER)
   challengeId: number;
 
-  @BelongsTo(() => Challenge)
+  @BelongsTo(() => Challenge, {
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+    hooks: true
+  })
   challenge: Challenge
 
   @AllowNull(false)

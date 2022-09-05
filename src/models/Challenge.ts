@@ -4,7 +4,8 @@ import {
   Model, 
   DataType, 
   AutoIncrement, 
-  AllowNull, PrimaryKey, BelongsTo, ForeignKey} from 'sequelize-typescript';
+  AllowNull, PrimaryKey, BelongsTo, ForeignKey, HasMany} from 'sequelize-typescript';
+import { Solution } from './Solution';
 
 import { User } from './User';
 
@@ -63,6 +64,13 @@ export class Challenge extends Model implements ChallengeModelInterface {
   @AllowNull(false)
   @Column(DataType.STRING)
   fonts: string;
+
+  @HasMany(() => Solution, {
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+    hooks: true
+  })
+  solutions: Solution[]
 
   @ForeignKey(() => User)
   @Column

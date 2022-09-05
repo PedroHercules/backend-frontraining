@@ -24,7 +24,7 @@ class ChallengeController {
         })
       }
 
-      const checkChallengeExists = await challengeRepository.findByTitle(title);
+      const checkChallengeExists = await challengeRepository.checkExists(title);
 
       if (checkChallengeExists){
         return res.status(400).json({ message: "Este desafio já existe" });
@@ -123,6 +123,36 @@ class ChallengeController {
       return res.status(200).json({ challenges });
     } catch (error: any) {
       return res.status(500).json({message: error.message})
+    }
+  }
+
+  async destroy(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json( {message: "Param ID must be a number"} );
+      }
+
+      const challenge = await challengeRepository.findById(id);
+
+      if (!challenge) {
+        return res.status(404).json({ message: "Este desafio não existe!" })
+      }
+      
+      if (challenge.solutions.length > 0) {
+        return res.status(400).json({ 
+          message: "Este desafio já possui soluções, não é possível deletá-lo!" 
+        })
+      }
+      
+      await challengeRepository.delete(id);
+
+      return res.status(200).json({ 
+        message: "Deletado com sucesso!",
+        challenge
+      });
+    }catch(error: any) {
+      return res.status(500).json({ message: error.message })
     }
   }
 }
