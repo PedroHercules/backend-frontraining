@@ -61,10 +61,12 @@ class ChallengeRepository {
   }
 
   async findByTitle(title: string) {
-    const challenge = await Challenge.findOne(
+    const challenge = await Challenge.findAll(
       { 
         where: {
-          title: title
+          title: {
+            [Op.like]: "%" + title + "%"
+          }
         },
 
         include: [{

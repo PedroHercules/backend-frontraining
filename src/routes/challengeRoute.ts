@@ -11,3 +11,4 @@ routesChallenge.post('/', authorize, uploadsChallenge.single('image'), challenge
 routesChallenge.get('/', challengeController.index);
 routesChallenge.get('/:id', challengeController.get);
 routesChallenge.get('/user/:userId', challengeController.getByUser);
+routesChallenge.post('/search', challengeController.getByTitle);

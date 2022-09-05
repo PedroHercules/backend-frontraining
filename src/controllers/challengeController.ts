@@ -96,6 +96,17 @@ class ChallengeController {
     }
   }
 
+  async getByTitle(req: Request, res: Response) {
+    try {
+      const { search } = req.body;
+      const challenges = await challengeRepository.findByTitle(search);
+
+      return res.status(200).json( { challenges } );
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
+
   async getByUser(req: Request, res: Response) {
     try{
       const UserId = Number(req.params.userId);
