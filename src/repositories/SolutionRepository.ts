@@ -44,6 +44,16 @@ class SolutionRepository {
     return solutions;
   }
 
+  async findById(id: number) {
+    const solution = await Solution.findOne({
+      where: {
+        id_solution: id
+      }
+    });
+
+    return solution;
+  }
+
   async findByUserId(id: number) {
     const solution = await Solution.findAll(
       { 
@@ -61,6 +71,16 @@ class SolutionRepository {
         }]
       }
     );
+
+    return solution;
+  }
+
+  async delete(id: number) {
+    const solution = await Solution.destroy({
+      where: {
+        id_solution: id
+      }
+    });
 
     return solution;
   }

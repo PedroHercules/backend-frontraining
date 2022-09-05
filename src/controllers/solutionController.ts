@@ -65,6 +65,30 @@ class SolutionController {
       return res.status(500).json({message: error.message})
     }
   }
+
+  async destroy(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Param ID must be a number" });
+      }
+
+      const solution = await solutionRepository.findById(id);
+
+      if (!solution) {
+        return res.status(404).json({ message: "Solution not found" });
+      }
+
+      await solutionRepository.delete(id);
+
+      return res.status(200).json({ 
+        message: "Solution deleted",
+        solution
+      });
+    } catch (error: any) {
+      return res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 export const solutionController = new SolutionController();
