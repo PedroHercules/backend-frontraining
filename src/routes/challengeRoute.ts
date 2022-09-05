@@ -13,3 +13,4 @@ routesChallenge.get('/:id', challengeController.get);
 routesChallenge.get('/user/:userId', challengeController.getByUser);
 routesChallenge.post('/search', challengeController.getByTitle);
 routesChallenge.delete('/:id', authorize, challengeController.destroy);
+routesChallenge.put('/:id', authorize, uploadsChallenge.single('image'), challengeController.update);

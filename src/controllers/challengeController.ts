@@ -126,6 +126,62 @@ class ChallengeController {
     }
   }
 
+  async update(req: Request, res: Response) {
+    try {
+      const id = Number(req.params.id);
+
+      const {
+        title, 
+        description, 
+        level, 
+        assets, 
+        colors, 
+        fonts, 
+        tools,
+        userId 
+      } = req.body;
+
+      const image = req.file;
+
+      if (isNaN(id)) {
+        return res.status(400).json( {message: "Param ID must be a number"} );
+      }
+
+      const challenge = await challengeRepository.findById(id);
+
+      if (!challenge) {
+        return res.status(404).json({ message: "Challenge not found" });
+      }
+
+      if (challenge.solutions.length > 0) {
+        return res.status(400).json({ 
+          message: "Desafio já possui soluções, não é possível alterar!"
+        });
+      }
+
+      const imagePath = 'uploads/' + title + "_" + image?.originalname;
+
+      const updated = await challengeRepository.update(id, {
+        title,
+        description,
+        level,
+        image: imagePath,
+        assets,
+        colors,
+        fonts,
+        tools,
+        userId
+      });
+
+      return res.status(200).json({ 
+        message: "Challenge updated",
+        challenge: updated
+      });
+    }catch(error: any) {
+      return res.status(500).json({ message: error.message })
+    }
+  }
+
   async destroy(req: Request, res: Response) {
     try {
       const id = Number(req.params.id);

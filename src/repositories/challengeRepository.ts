@@ -134,6 +134,34 @@ class ChallengeRepository {
     return challenge;
   }
 
+  async update(id: number, 
+    { 
+      title, 
+      description, 
+      level, 
+      image, 
+      tools, 
+      assets, colors, fonts, userId}: ChallengeInterface) {
+        
+    const challenge = await Challenge.update({
+      title,
+      description,
+      level,
+      image,
+      tools,
+      assets,
+      colors,
+      fonts,
+      userId
+    }, {
+      where: {
+        id_challenge: id
+      }
+    });
+
+    return challenge;
+  }
+
   async delete(id: number) {
     const challenge = await Challenge.destroy({
       where: {
