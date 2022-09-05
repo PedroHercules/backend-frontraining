@@ -51,7 +51,11 @@ class SolutionRepository {
           userId: id
         },
 
-        include: [{
+        include: [
+        {
+          model: Challenge,
+        },
+        {
           model: User,
           attributes: ["username", "email", "score"]
         }]
