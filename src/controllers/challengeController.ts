@@ -95,6 +95,25 @@ class ChallengeController {
       return res.status(500).json({ message: error.message })
     }
   }
+
+  async getByUser(req: Request, res: Response) {
+    try{
+      const UserId = Number(req.params.userId);
+      if (isNaN(UserId)) {
+        return res.status(400).json( {message: "Param ID must be a number"} );
+      }
+
+      const challenges = await challengeRepository.findByUserId(UserId);
+
+      if (!challenges) {
+        return res.status(404).json({ message: "Challenge not found" });
+      }
+
+      return res.status(200).json({ challenges });
+    } catch (error: any) {
+      return res.status(500).json({message: error.message})
+    }
+  }
 }
 
 export const challengeController = new ChallengeController();

@@ -43,6 +43,23 @@ class SolutionRepository {
 
     return solutions;
   }
+
+  async findByUserId(id: number) {
+    const solution = await Solution.findAll(
+      { 
+        where: {
+          userId: id
+        },
+
+        include: [{
+          model: User,
+          attributes: ["username", "email", "score"]
+        }]
+      }
+    );
+
+    return solution;
+  }
 }
 
 export const solutionRepository = new SolutionRepository();

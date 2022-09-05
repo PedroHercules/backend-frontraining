@@ -45,6 +45,26 @@ class SolutionController {
       return res.status(500).json({ message: error.message });
     }
   }
+
+  async findByUser(req: Request, res: Response) {
+    try{
+      const UserId = Number(req.params.userId);
+      if (isNaN(UserId)) {
+        return res.status(400).json( {message: "Param ID must be a number"} );
+      }
+
+      const solutions = await solutionRepository.findByUserId(UserId);
+      console.log(solutions)
+
+      if (!solutions) {
+        return res.status(404).json({ message: "Solution not found" });
+      }
+
+      return res.status(200).json({ solutions });
+    } catch (error: any) {
+      return res.status(500).json({message: error.message})
+    }
+  }
 }
 
 export const solutionController = new SolutionController();

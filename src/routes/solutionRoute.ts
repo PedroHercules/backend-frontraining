@@ -9,3 +9,4 @@ export const routesSolution = express.Router();
 
 routesSolution.post('/', authorize, uploadsSolution.single('image'), solutionController.submit);
 routesSolution.get('/', solutionController.index);
+routesSolution.get('/user/:userId', solutionController.findByUser);

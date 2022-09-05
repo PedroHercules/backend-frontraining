@@ -93,6 +93,23 @@ class ChallengeRepository {
 
     return challenge;
   }
+
+  async findByUserId(id: number) {
+    const challenge = await Challenge.findAll(
+      { 
+        where: {
+          userId: id
+        },
+
+        include: [{
+          model: User,
+          attributes: ["username", "email", "score"]
+        }]
+      }
+    );
+
+    return challenge;
+  }
 }
 
 export const challengeRepository = new ChallengeRepository();
