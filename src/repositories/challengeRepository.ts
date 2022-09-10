@@ -49,7 +49,6 @@ class ChallengeRepository {
       limit: limit,
       offset: offset
     });
-    console.log(challenges);
     return challenges;
   }
 
