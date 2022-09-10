@@ -1,6 +1,10 @@
 import { challengeRepository } from '../repositories/challengeRepository';
 import { Request, Response } from 'express';
 
+interface InterfaceChallenges {
+  count: Number,
+  rows: Object[]
+}
 
 class ChallengeController {
   async create (req: Request, res: Response) {
@@ -58,14 +62,13 @@ class ChallengeController {
     try {
       const level = req.query.level;
       const order = req.query.order || 'DESC';
-      let challenges: object[];
-      if (level) {
-        challenges = await challengeRepository.filterByLevel(level.toString(), order?.toString());
-      } else {
-        challenges = await challengeRepository.all(order?.toString());
-      }
+      const limit = req.query.limit;
+      const offset = req.query.offset;
+      let challenges: InterfaceChallenges;
       
-      if (challenges.length === 0){
+      challenges = await challengeRepository.all(order?.toString(), Number(limit), Number(offset));
+      
+      if (challenges.rows.length === 0){
         return res.status(404).json({ message: "Não há desafios cadastrados" });
       }
 

@@ -122,7 +122,7 @@ class SolutionController {
       await solutionRepository.delete(id);
 
       return res.status(200).json({ 
-        message: "Solution deleted",
+        message: "Deletado com sucesso!",
         solution
       });
     } catch (error: any) {
