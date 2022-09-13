@@ -1,6 +1,11 @@
 import { solutionRepository } from "../repositories/SolutionRepository";
 import { Request, Response } from "express";
-import { Solution } from "../models/Solution";
+
+import { challengeRepository } from "../repositories/challengeRepository";
+
+import compare from 'resemblejs/compareImages';
+
+import fs from 'fs';
 
 class SolutionController {
   async submit(req: Request, res: Response) {
@@ -21,6 +26,34 @@ class SolutionController {
 
       const imagePath = 'uploads/solutions/' + userId + "_" + challengeId + "_" + image?.originalname;
       
+      const challenge = await challengeRepository.findById(challengeId);
+
+      if (!challenge) return res.status(404).json({ message: "challenge not found" });
+
+      const options = {
+        output: {
+            errorColor: {
+                red: 255,
+                green: 0,
+                blue: 255
+            },
+            transparency: 0.3,
+            largeImageThreshold: 1200,
+            useCrossOrigin: false,
+            outputDiff: true
+        },
+        scaleToSameSize: true,
+      };
+
+      const img1 = fs.readFileSync("src/" + imagePath);
+      const img2 = fs.readFileSync("src/" + challenge.image);
+
+      const data = await compare(img1, img2, options);
+
+      if (data.rawMisMatchPercentage > 50) {
+        return res.status(400).json({ message: "Imagem não corresponde ao desafio" });
+      }
+
       const solution = await solutionRepository.register({
         challengeId,
         userId,
