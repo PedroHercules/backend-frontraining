@@ -71,7 +71,10 @@ class SolutionController {
 
   async index(req: Request, res: Response) {
     try {
-      const solutions = await solutionRepository.all();
+      const limit = req.query.limit;
+      const offset = req.query.offset;
+
+      const solutions = await solutionRepository.all(Number(limit), Number(offset));
 
       return res.status(200).json({ solutions });
     } catch (error: any) {
@@ -155,7 +158,7 @@ class SolutionController {
       await solutionRepository.delete(id);
 
       return res.status(200).json({ 
-        message: "Solution deleted",
+        message: "Deletado com sucesso!",
         solution
       });
     } catch (error: any) {

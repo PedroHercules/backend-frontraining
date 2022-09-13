@@ -25,8 +25,8 @@ class SolutionRepository {
     return solution;
   }
 
-  async all() {
-    const solutions = await Solution.findAll({
+  async all(limit: number, offset: number) {
+    const solutions = await Solution.findAndCountAll({
       include: [
         {
           model: Challenge,
@@ -38,7 +38,9 @@ class SolutionRepository {
       ],
       order: [
         ['createdAt', 'DESC']
-      ]
+      ],
+      limit: limit,
+      offset: offset
     });
 
     return solutions;

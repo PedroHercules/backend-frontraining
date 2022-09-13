@@ -32,8 +32,8 @@ class ChallengeRepository {
     return challenge;
   } 
 
-  async all(order: string) {
-    const challenges = await Challenge.findAll({
+  async all(order: string, limit: number, offset: number) {
+    const challenges = await Challenge.findAndCountAll({
       include: [
         {
           model: User,
@@ -45,7 +45,9 @@ class ChallengeRepository {
       ],
       order: [
         ['createdAt', order]
-      ]
+      ],
+      limit: limit,
+      offset: offset
     });
     return challenges;
   }
