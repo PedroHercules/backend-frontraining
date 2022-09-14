@@ -45,6 +45,26 @@ class UserRepository {
 
     return user;
   }
+  async findUserById (id: Number) {
+    const user = await User.findOne({
+      raw: true,
+      where: {
+        id: id
+      }
+    });
+
+    return user;
+  }
+  async updateScore(id: number, level: number){
+    const user = await User.findOne({
+      where: {
+        id: id
+      }
+    });
+    console.log(user)
+    user?.increment('score', {by: (10 * level)})
+    return user;
+  }
 }
 
 export const userRepository = new UserRepository();

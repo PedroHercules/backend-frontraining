@@ -6,3 +6,4 @@ export const routesUser = express.Router();
 
 routesUser.post('/', userController.registerUser);
 routesUser.post('/auth', userController.auth);
+routesUser.get('/find', userController.findById);

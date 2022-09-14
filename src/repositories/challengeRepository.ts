@@ -37,7 +37,7 @@ class ChallengeRepository {
       include: [
         {
           model: User,
-          attributes: ["username", "email", "score"]
+          attributes: ["id", "username", "email", "score"]
         },
         {
           model: Solution

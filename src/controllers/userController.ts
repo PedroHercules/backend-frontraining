@@ -78,6 +78,20 @@ class UserController {
       res.status(500).json({ message: error.message })
     }
   }
+  async findById(req: Request, res: Response) {
+    try{
+      const id  = req.query.id;
+
+      const user = await userRepository.findUserById(Number(id));
+      if (!user) {
+        return res.status(404).json({ message: "Este usuário não é cadastrado" });
+      }
+      return res.status(200).json({ user });
+    }catch (error: any) {
+      console.log(error)
+      res.status(500).json({ message: error.message })
+    }
+  }
 }
 
 export const userController = new UserController();

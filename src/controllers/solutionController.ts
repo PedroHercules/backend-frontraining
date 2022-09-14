@@ -6,6 +6,7 @@ import { challengeRepository } from "../repositories/challengeRepository";
 import compare from 'resemblejs/compareImages';
 
 import fs from 'fs';
+import { userRepository } from "../repositories/userRepository";
 
 class SolutionController {
   async submit(req: Request, res: Response) {
@@ -54,6 +55,9 @@ class SolutionController {
         return res.status(400).json({ message: "Imagem não corresponde ao desafio" });
       }
 
+      const user = await userRepository.updateScore(userId, Number(challenge.level));
+      console.log(user);
+
       const solution = await solutionRepository.register({
         challengeId,
         userId,
@@ -65,6 +69,7 @@ class SolutionController {
 
       return res.status(200).json({ solution });
     } catch (error: any) {
+      console.log(error)
       return res.status(500).json({ message: error.message });
     }
   }
