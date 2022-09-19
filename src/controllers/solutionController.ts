@@ -46,8 +46,10 @@ class SolutionController {
         scaleToSameSize: true,
       };
 
+      const challengeImage = challenge.image;
+
       const img1 = fs.readFileSync("src/" + imagePath);
-      const img2 = fs.readFileSync("src/" + challenge.image);
+      const img2 = fs.readFileSync("src/" + challengeImage);
 
       const data = await compare(img1, img2, options);
 
@@ -55,8 +57,7 @@ class SolutionController {
         return res.status(400).json({ message: "Imagem não corresponde ao desafio" });
       }
 
-      const user = await userRepository.updateScore(userId, Number(challenge.level));
-      console.log(user);
+      await userRepository.updateScore(userId, Number(challenge.level));
 
       const solution = await solutionRepository.register({
         challengeId,

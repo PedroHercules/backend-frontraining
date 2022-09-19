@@ -10,7 +10,7 @@ import { routesSolution } from './routes/solutionRoute';
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 
 const port = process.env.PORT || 5000;
 

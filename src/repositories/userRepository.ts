@@ -1,8 +1,8 @@
 import { Sequelize, Op, Model } from 'sequelize';
 import { User  } from '../models/User';
 
-export interface UserInterface {
-  id?: number
+export interface UserInterface{
+  id?: number;
   username: string,
   email: string,
   password?: string
@@ -58,10 +58,10 @@ class UserRepository {
   async updateScore(id: number, level: number){
     const user = await User.findOne({
       where: {
-        id: id
+        id_user: id
       }
     });
-    console.log(user)
+
     user?.increment('score', {by: (10 * level)})
     return user;
   }
