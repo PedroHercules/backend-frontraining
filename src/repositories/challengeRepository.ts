@@ -37,7 +37,7 @@ class ChallengeRepository {
       include: [
         {
           model: User,
-          attributes: ["id", "username", "email", "score"]
+          attributes: ["id_user", "username", "email", "score"]
         },
         {
           model: Solution
@@ -100,6 +100,7 @@ class ChallengeRepository {
   async findById(id: number) {
     const challenge = await Challenge.findOne(
       { 
+        raw: true,
         where: {
           id_challenge: id
         },
