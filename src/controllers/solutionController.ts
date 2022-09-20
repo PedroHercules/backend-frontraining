@@ -50,7 +50,7 @@ class SolutionController {
       const img2 = fs.readFileSync("src/" + challenge.image);
 
       const data = await compare(img1, img2, options);
-
+      console.log("diferença", data.rawMisMatchPercentage)
       if (data.rawMisMatchPercentage > 50) {
         return res.status(400).json({ message: "Imagem não corresponde ao desafio" });
       }
