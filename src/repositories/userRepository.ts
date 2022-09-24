@@ -17,7 +17,7 @@ class UserRepository {
         password
       }
     );
-
+    console.log(user)
     user.password = undefined;
     return user;
   }
@@ -58,7 +58,7 @@ class UserRepository {
   async updateScore(id: number, level: number){
     const user = await User.findOne({
       where: {
-        id_user: id
+        id: id
       }
     });
 

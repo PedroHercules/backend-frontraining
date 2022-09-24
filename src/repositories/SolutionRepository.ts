@@ -49,7 +49,7 @@ class SolutionRepository {
   async findById(id: number) {
     const solution = await Solution.findOne({
       where: {
-        id_solution: id
+        id: id
       }
     });
 
@@ -88,7 +88,7 @@ class SolutionRepository {
       },
       {
         where: {
-          id_solution: id
+          id: id
         }
       }
     );
@@ -99,7 +99,7 @@ class SolutionRepository {
   async delete(id: number) {
     const solution = await Solution.destroy({
       where: {
-        id_solution: id
+        id: id
       }
     });
 
