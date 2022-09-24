@@ -34,12 +34,11 @@ class UserController {
       });
 
       const token = await generateToken({
-        id: user.id
+        id: user?.id_user
       });
       
       return res.status(201).json({ token, user });
     } catch (error) {
-      console.log(error)
       return res.status(500).json({
         message: error
       });
@@ -69,12 +68,11 @@ class UserController {
       user.password = undefined;
 
       const token = await generateToken({
-        id: user.id
+        id: user.id_user
       });
       
       return res.status(200).json({ token, user });
     } catch (error: any) {
-      console.log(error)
       res.status(500).json({ message: error.message })
     }
   }
@@ -88,7 +86,6 @@ class UserController {
       }
       return res.status(200).json({ user });
     }catch (error: any) {
-      console.log(error)
       res.status(500).json({ message: error.message })
     }
   }

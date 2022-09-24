@@ -1,5 +1,6 @@
 import { challengeRepository } from '../repositories/challengeRepository';
 import { Request, Response } from 'express';
+import { solutionRepository } from '../repositories/SolutionRepository';
 
 interface InterfaceChallenges {
   count: Number,
@@ -74,7 +75,6 @@ class ChallengeController {
 
       return res.status(200).json({ challenges });
     } catch (error: any) {
-      console.log(error)
       return res.status(500).json({
         message: error.message
       })
@@ -151,12 +151,15 @@ class ChallengeController {
       }
 
       const challenge = await challengeRepository.findById(id);
+      console.log(challenge)
+      const solutions = await solutionRepository.findByChallenge(challenge?.id_challenge || 1)
+      console.log(solutions)
 
       if (!challenge) {
         return res.status(404).json({ message: "Challenge not found" });
       }
 
-      if (challenge.solutions.length > 0) {
+      if (solutions.length > 0) {
         return res.status(400).json({ 
           message: "Desafio já possui soluções, não é possível alterar!"
         });

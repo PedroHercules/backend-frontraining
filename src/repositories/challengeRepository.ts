@@ -100,20 +100,18 @@ class ChallengeRepository {
   async findById(id: number) {
     const challenge = await Challenge.findOne(
       { 
-        raw: true,
         where: {
           id_challenge: id
         },
-
+        
         include: [
           {
             model: User,
             attributes: ["username", "email", "score"]
           },
-          {
-            model: Solution
-          }
-        ]
+        ],
+        raw: true,
+        nest: true
       }
     );
 

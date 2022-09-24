@@ -28,6 +28,7 @@ class SolutionController {
       const imagePath = 'uploads/solutions/' + userId + "_" + challengeId + "_" + image?.originalname;
       
       const challenge = await challengeRepository.findById(challengeId);
+      console.log(challenge)
 
       if (!challenge) return res.status(404).json({ message: "challenge not found" });
 
@@ -52,9 +53,11 @@ class SolutionController {
       const img2 = fs.readFileSync("src/" + challengeImage);
 
       const data = await compare(img1, img2, options);
-      console.log("diferença", data.rawMisMatchPercentage)
       if (data.rawMisMatchPercentage > 50) {
         return res.status(400).json({ message: "Imagem não corresponde ao desafio" });
+      }
+      if (data.rawMisMatchPercentage < 5) {
+        return res.status(400).json({ message: "Imagem muito parecida 🤨" });
       }
 
       await userRepository.updateScore(userId, Number(challenge.level));
@@ -70,7 +73,6 @@ class SolutionController {
 
       return res.status(200).json({ solution });
     } catch (error: any) {
-      console.log(error)
       return res.status(500).json({ message: error.message });
     }
   }
@@ -96,7 +98,6 @@ class SolutionController {
       }
 
       const solutions = await solutionRepository.findByUserId(UserId);
-      console.log(solutions)
 
       if (!solutions) {
         return res.status(404).json({ message: "Solution not found" });

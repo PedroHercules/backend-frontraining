@@ -56,6 +56,17 @@ class SolutionRepository {
     return solution;
   }
 
+  async findByChallenge(id: number) {
+    const solutions = await Solution.findAll({
+      raw: true,
+      where: {
+        challengeId: id
+      }
+    });
+
+    return solutions;
+  }
+
   async findByUserId(id: number) {
     const solution = await Solution.findAll(
       { 

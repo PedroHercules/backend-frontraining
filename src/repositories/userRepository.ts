@@ -2,7 +2,7 @@ import { Sequelize, Op, Model } from 'sequelize';
 import { User  } from '../models/User';
 
 export interface UserInterface{
-  id?: number;
+  id_user?: number;
   username: string,
   email: string,
   password?: string
@@ -18,8 +18,11 @@ class UserRepository {
       }
     );
 
-    user.password = undefined;
-    return user;
+    const userLog = await this.findUserById(user?.id_user || 1);
+    if (userLog) {
+      userLog.password = 'undefined';
+    }
+    return userLog;
   }
 
   async findUser(username: string, email: string) {
@@ -49,7 +52,7 @@ class UserRepository {
     const user = await User.findOne({
       raw: true,
       where: {
-        id: id
+        id_user: id
       }
     });
 
