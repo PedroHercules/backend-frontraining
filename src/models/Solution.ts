@@ -10,7 +10,6 @@ import { Challenge } from './Challenge'
 import { User } from './User';
 
 interface SolutionInterface {
-  id_solution: number
   challengeId: number
   userId: number
   title: string
@@ -24,11 +23,6 @@ interface SolutionInterface {
   timestamps: true
 })
 export class Solution extends Model implements SolutionInterface {
-  @AutoIncrement
-  @AllowNull(false)
-  @PrimaryKey
-  @Column(DataType.INTEGER)
-  id_solution: number;
 
   @AllowNull(false)
   @ForeignKey(() => Challenge)

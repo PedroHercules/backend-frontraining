@@ -32,9 +32,9 @@ class UserController {
         email,
         password: hashPassword
       });
-
+      
       const token = await generateToken({
-        id: user?.id_user
+        id: user?.id
       });
       
       return res.status(201).json({ token, user });
@@ -66,9 +66,9 @@ class UserController {
       }
 
       user.password = undefined;
-
+      
       const token = await generateToken({
-        id: user.id_user
+        id: user.id
       });
       
       return res.status(200).json({ token, user });

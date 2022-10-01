@@ -2,7 +2,7 @@ import { Sequelize, Op, Model } from 'sequelize';
 import { User  } from '../models/User';
 
 export interface UserInterface{
-  id_user?: number;
+  id?: number;
   username: string,
   email: string,
   password?: string
@@ -17,12 +17,9 @@ class UserRepository {
         password
       }
     );
-
-    const userLog = await this.findUserById(user?.id_user || 1);
-    if (userLog) {
-      userLog.password = 'undefined';
-    }
-    return userLog;
+    console.log(user)
+    user.password = undefined;
+    return user;
   }
 
   async findUser(username: string, email: string) {
@@ -52,7 +49,7 @@ class UserRepository {
     const user = await User.findOne({
       raw: true,
       where: {
-        id_user: id
+        id: id
       }
     });
 
@@ -61,7 +58,7 @@ class UserRepository {
   async updateScore(id: number, level: number){
     const user = await User.findOne({
       where: {
-        id_user: id
+        id: id
       }
     });
 

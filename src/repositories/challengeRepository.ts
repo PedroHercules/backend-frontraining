@@ -37,7 +37,7 @@ class ChallengeRepository {
       include: [
         {
           model: User,
-          attributes: ["id_user", "username", "email", "score"]
+          attributes: ["id", "username", "email", "score"]
         },
         {
           model: Solution
@@ -101,7 +101,7 @@ class ChallengeRepository {
     const challenge = await Challenge.findOne(
       { 
         where: {
-          id_challenge: id
+          id: id
         },
         
         include: [
@@ -156,7 +156,7 @@ class ChallengeRepository {
       userId
     }, {
       where: {
-        id_challenge: id
+        id: id
       }
     });
 
@@ -166,7 +166,7 @@ class ChallengeRepository {
   async delete(id: number) {
     const challenge = await Challenge.destroy({
       where: {
-        id_challenge: id
+        id: id
       }
     });
 

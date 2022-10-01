@@ -151,9 +151,8 @@ class ChallengeController {
       }
 
       const challenge = await challengeRepository.findById(id);
-      console.log(challenge)
-      const solutions = await solutionRepository.findByChallenge(challenge?.id_challenge || 1)
-      console.log(solutions)
+
+      const solutions = await solutionRepository.findByChallenge(challenge?.id || 1)
 
       if (!challenge) {
         return res.status(404).json({ message: "Challenge not found" });
@@ -164,8 +163,13 @@ class ChallengeController {
           message: "Desafio já possui soluções, não é possível alterar!"
         });
       }
-
-      const imagePath = 'uploads/' + title + "_" + image?.originalname;
+      console.log(image)
+      var imagePath = null
+      if (image){
+        imagePath = 'uploads/' + title + "_" + image?.originalname;
+      } else {
+        imagePath = challenge.image;
+      }
 
       const updated = await challengeRepository.update(id, {
         title,
@@ -196,12 +200,14 @@ class ChallengeController {
       }
 
       const challenge = await challengeRepository.findById(id);
+      const solutions = await solutionRepository.findByChallenge(challenge?.id || 1)
+      console.log(solutions)
 
       if (!challenge) {
         return res.status(404).json({ message: "Este desafio não existe!" })
       }
       
-      if (challenge.solutions.length > 0) {
+      if (solutions.length > 0) {
         return res.status(400).json({ 
           message: "Este desafio já possui soluções, não é possível deletá-lo!" 
         })

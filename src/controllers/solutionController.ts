@@ -56,7 +56,7 @@ class SolutionController {
       if (data.rawMisMatchPercentage > 50) {
         return res.status(400).json({ message: "Imagem não corresponde ao desafio" });
       }
-      if (data.rawMisMatchPercentage < 5) {
+      if (data.rawMisMatchPercentage < 2) {
         return res.status(400).json({ message: "Imagem muito parecida 🤨" });
       }
 
@@ -132,7 +132,14 @@ class SolutionController {
         return res.status(404).json({ message: "Solution not found" });
       }
 
-      const imagePath = 'uploads/solutions/' + userId + "_" + challengeId + "_" + image?.originalname;
+
+      console.log(image)
+      var imagePath = null
+      if (image){
+        imagePath = 'uploads/solutions/' + userId + "_" + challengeId + "_" + image?.originalname;
+      } else {
+        imagePath = solution.image;
+      }
 
       const updatedSolution = await solutionRepository.update(id, {
         title,
