@@ -2,6 +2,12 @@ import { userRepository, UserInterface } from '../repositories/userRepository';
 import bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import { generateToken } from '../middleware/authMiddleware';
+import sendEmail from '../utils/sendEmail';
+import crypto from 'crypto';
+import jwt, { VerifyOptions } from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class UserController {
 
@@ -87,6 +93,63 @@ class UserController {
       return res.status(200).json({ user });
     }catch (error: any) {
       res.status(500).json({ message: error.message })
+    }
+  }
+
+  async sendResetLink(req: Request, res: Response) {
+    try {
+      const {email} = req.body;
+      const user: any = await userRepository.findUserByEmail(email);
+      if(!user){
+        return res.status(404).json({ message: "Este usuário não é cadastrado" });
+      }
+      const token = await generateToken({
+        id: user?.id,
+      });
+
+      console.log(token)
+
+      const link = `${req.protocol}://${req.hostname}:5000/user/reset_password/${token}`
+      await sendEmail(
+        email,
+        'marcosmpff@ufpi.edu.br',
+        'Redefinição de senha',
+        `
+          <div>Click no link para alterar a senha</div><br/>
+          <div>${link}</div>
+        `
+      );
+      return res.status(200).send({message: 'Link para resetar a senha foi gerado com sucesso!'})
+    } catch (e: any) {
+      console.log('teste')
+      return res.status(500).json({ message: e.message })
+    }
+  }
+  async resetPassword(req: Request, res: Response) {
+    try {
+      const {password} = req.body;
+      const {token} = req.params;
+      const securityKey= process.env.SECURITY_KEY as string;
+      // const decoded = jwt.verify(token, securityKey);
+      console.log(req.params.token)
+      const decode:any = jwt.verify(token, securityKey);
+      if (decode) {
+
+        const hashPassword = await bcrypt.hash(password, 10);
+  
+        const updateUser: any = await userRepository.updatePassword(decode?.id, hashPassword);
+        let user = undefined
+        if (updateUser[0] >= 1){
+          user = await userRepository.findUserById(decode?.id);
+        }
+        if (user){
+          user.password = 'undefined'
+        }
+        return res.status(200).send({token, user: user})
+      }
+
+    } catch (e: any) {
+      return res.status(500).json({ message: e.message })
     }
   }
 }

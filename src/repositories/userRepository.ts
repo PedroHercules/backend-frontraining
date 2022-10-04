@@ -65,6 +65,17 @@ class UserRepository {
     user?.increment('score', {by: (10 * level)})
     return user;
   }
+  async updatePassword(id: number, password: string){
+    const updateUser = await User.update(
+        {password},
+        {
+          where: {id: id},
+        }
+        
+      )
+    console.log(updateUser[0])
+    return updateUser;
+  }
 }
 
 export const userRepository = new UserRepository();
