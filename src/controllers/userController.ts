@@ -109,7 +109,7 @@ class UserController {
 
       console.log(token)
 
-      const link = `${req.protocol}://${req.hostname}:5000/user/reset_password/${token}`
+      const link = `https://ubiquitous-cocada-e250e4.netlify.app/user/reset_password/${token}`
       await sendEmail(
         email,
         'marcosmpff@ufpi.edu.br',
