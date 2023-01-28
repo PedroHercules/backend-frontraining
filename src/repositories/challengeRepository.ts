@@ -1,6 +1,7 @@
 import { Challenge } from '../models/Challenge';
 import { User } from '../models/User';
 import { Op } from 'sequelize';
+import { Solution } from '../models/Solution';
 
 export interface ChallengeInterface {
   title: string
@@ -14,7 +15,7 @@ export interface ChallengeInterface {
   userId: number
 }
 
-export class ChallengeRepository {
+class ChallengeRepository {
   async register( { title, description, level, image, tools, assets, colors, fonts, userId }: ChallengeInterface ) {
     const challenge = await Challenge.create({
       title,
@@ -31,15 +32,22 @@ export class ChallengeRepository {
     return challenge;
   } 
 
-  async all(order: string) {
-    const challenges = await Challenge.findAll({
-      include: [{
-        model: User,
-        attributes: ["username", "email", "score"]
-      }],
+  async all(order: string, limit: number, offset: number) {
+    const challenges = await Challenge.findAndCountAll({
+      include: [
+        {
+          model: User,
+          attributes: ["id", "username", "email", "score"]
+        },
+        {
+          model: Solution
+        }
+      ],
       order: [
         ['createdAt', order]
-      ]
+      ],
+      limit: limit,
+      offset: offset
     });
     return challenges;
   }
@@ -60,11 +68,23 @@ export class ChallengeRepository {
     return challenges;
   }
 
-  async find(title: string) {
-    const challenge = await Challenge.findOne(
+  async checkExists(title: string) {
+    const challenge = await Challenge.findOne({
+      where: {
+        title: title
+      }
+    });
+
+    return challenge;
+  }
+
+  async findByTitle(title: string) {
+    const challenge = await Challenge.findAll(
       { 
         where: {
-          title: title
+          title: {
+            [Op.like]: "%" + title + "%"
+          }
         },
 
         include: [{
@@ -76,4 +96,82 @@ export class ChallengeRepository {
 
     return challenge;
   }
+
+  async findById(id: number) {
+    const challenge = await Challenge.findOne(
+      { 
+        where: {
+          id: id
+        },
+        
+        include: [
+          {
+            model: User,
+            attributes: ["username", "email", "score"]
+          },
+        ],
+        raw: true,
+        nest: true
+      }
+    );
+
+    return challenge;
+  }
+
+  async findByUserId(id: number) {
+    const challenge = await Challenge.findAll(
+      { 
+        where: {
+          userId: id
+        },
+
+        include: [{
+          model: User,
+          attributes: ["username", "email", "score"]
+        }]
+      }
+    );
+
+    return challenge;
+  }
+
+  async update(id: number, 
+    { 
+      title, 
+      description, 
+      level, 
+      image, 
+      tools, 
+      assets, colors, fonts, userId}: ChallengeInterface) {
+        
+    const challenge = await Challenge.update({
+      title,
+      description,
+      level,
+      image,
+      tools,
+      assets,
+      colors,
+      fonts,
+      userId
+    }, {
+      where: {
+        id: id
+      }
+    });
+
+    return challenge;
+  }
+
+  async delete(id: number) {
+    const challenge = await Challenge.destroy({
+      where: {
+        id: id
+      }
+    });
+
+    return challenge;
+  }
 }
+
+export const challengeRepository = new ChallengeRepository();

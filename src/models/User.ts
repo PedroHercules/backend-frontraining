@@ -8,7 +8,6 @@ import {
 import { Challenge } from './Challenge';
 
 interface UserModelInterface {
-  id: number
   username: string
   email: string
   password: string
@@ -19,13 +18,7 @@ interface UserModelInterface {
   tableName: 'users',
   timestamps: true
 })
-export class User extends Model implements UserModelInterface{
-
-  @AutoIncrement
-  @AllowNull(false)
-  @PrimaryKey
-  @Column(DataType.INTEGER)
-  id: number
+export class User extends Model implements UserModelInterface {
 
   @AllowNull(false)
   @Column(DataType.STRING)

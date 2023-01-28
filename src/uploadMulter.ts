@@ -1,6 +1,6 @@
 import multer from 'multer';
 
-const storage = multer.diskStorage({
+const storageChallenge = multer.diskStorage({
   destination: function (req, file, callback) {
     callback(null, "src/uploads/")
   },
@@ -9,4 +9,15 @@ const storage = multer.diskStorage({
   }
 });
 
-export const uploads = multer({ storage: storage });
+const storageSolution = multer.diskStorage({
+  destination: function (req, file, callback) {
+    callback(null, "src/uploads/solutions/")
+  },
+  filename: function (req, file, callback) {
+    const challengeId = req.body.challengeId;
+    callback(null, req.body.userId + "_" + challengeId + "_" + file.originalname)
+  }
+});
+
+export const uploadsChallenge = multer({ storage: storageChallenge });
+export const uploadsSolution = multer({ storage: storageSolution });

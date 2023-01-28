@@ -1,13 +1,16 @@
 import express from 'express';
 
-import { ChallengeController } from '../controllers/challengeController';
+import { challengeController } from '../controllers/challengeController';
 import { authorize } from '../middleware/authMiddleware';
 
-import { uploads } from '../uploadMulter';
+import { uploadsChallenge } from '../uploadMulter';
 
 export const routesChallenge = express.Router()
 
-const challengeController = new ChallengeController();
-
-routesChallenge.post('/', authorize, uploads.single('image'), challengeController.create);
-routesChallenge.get('/', challengeController.index)
+routesChallenge.post('/', authorize, uploadsChallenge.single('image'), challengeController.create);
+routesChallenge.get('/', challengeController.index);
+routesChallenge.get('/:id', challengeController.get);
+routesChallenge.get('/user/:userId', challengeController.getByUser);
+routesChallenge.post('/search', challengeController.getByTitle);
+routesChallenge.delete('/:id', authorize, challengeController.destroy);
+routesChallenge.put('/:id', authorize, uploadsChallenge.single('image'), challengeController.update);
